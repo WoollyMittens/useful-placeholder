@@ -53,7 +53,7 @@
 						}
 					);
 					// wait for the document to load and then start all instances
-					placeholders.wait();
+					window.addEventListener('load', function () { placeholders.wait(); }, false);
 				//-->
 				</script>
 				<!-- Cut above this -->
