@@ -31,6 +31,8 @@
 					context.obj.value = '';
 				}
 			}
+			// disable the start function so it can't be started twice
+			this.start = function () {};
 		};
 		this.create = function (node, context) {
 			// create a placeholder for the placeholder
@@ -74,6 +76,8 @@
 				node.focus();
 			}, 100);
 		};
+		// go
+		this.start();
 	};
 
 }(window.useful = window.useful || {}));

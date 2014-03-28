@@ -38,22 +38,23 @@
 				<script src="./inc/js/useful-placeholder.js"></script>
 				<script>
 				//<!--
-					// create new instances of the script
-					var placeholders = new useful.Instances(
-						document.querySelectorAll('input'),
-						useful.Placeholder,
-						{
-							// placeholder color
-							'color' : '#999',
-							// browsers that are assumed to have native support for <input placeholder='Foo bar'/>
-							'support' : navigator.userAgent.match(/webkit|firefox|opera|msie 10/gi),
-							// position tweak
-							'offsetX' : 5,
-							'offsetY' : 1
-						}
-					);
-					// wait for the document to load and then start all instances
-					window.addEventListener('load', function () { placeholders.wait(); }, false);
+					// wait for the page to load
+					window.addEventListener('load', function () {
+						// create new instances of the script
+						var placeholders = new useful.Instances(
+							document.querySelectorAll('input'),
+							useful.Placeholder,
+							{
+								// placeholder color
+								'color' : '#999',
+								// browsers that are assumed to have native support for <input placeholder='Foo bar'/>
+								'support' : navigator.userAgent.match(/webkit|firefox|opera|msie 10/gi),
+								// position tweak
+								'offsetX' : 5,
+								'offsetY' : 1
+							}
+						);
+					}, false);
 				//-->
 				</script>
 				<!-- Cut above this -->

@@ -36,8 +36,10 @@
 			for (var a = 0, b = this.objs.length; a < b; a += 1) {
 				// store a constructed instance with cloned cfgs object
 				this.constructs[a] = new this.constructor(this.objs[a], Object.create(this.cfgs));
-				this.constructs[a].start();
 			}
+			// disable the start function so it can't be started twice
+			this.start = function () {};
+			// empty the timeout
 			return null;
 		};
 		// returns the constructs
@@ -52,6 +54,8 @@
 		this.getByIndex = function (index) {
 			return this.constructs[index];
 		};
+		// go
+		this.wait();
 	};
 
 }(window.useful = window.useful || {}));
@@ -134,7 +138,8 @@
 
 	// allow console.log
 	polyfills.consoleLog = function () {
-		if (!window.console) {
+		var overrideTest = new RegExp('console-log', 'i');
+		if (!window.console || overrideTest.test(document.querySelectorAll('html')[0].className)) {
 			window.console = {};
 			window.console.log = function () {
 				// if the reporting panel doesn't exist
@@ -165,6 +170,8 @@
 				for (a = 0, b = arguments.length; a < b; a += 1) {
 					messages += arguments[a] + '<br/>';
 				}
+				// add a break after the message
+				messages += '<hr/>';
 				// output the queue to the panel
 				reportPanel.innerHTML = messages + reportString;
 			};
@@ -347,6 +354,8 @@
 					context.obj.value = '';
 				}
 			}
+			// disable the start function so it can't be started twice
+			this.start = function () {};
 		};
 		this.create = function (node, context) {
 			// create a placeholder for the placeholder
@@ -390,6 +399,8 @@
 				node.focus();
 			}, 100);
 		};
+		// go
+		this.start();
 	};
 
 }(window.useful = window.useful || {}));
