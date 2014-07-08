@@ -7,8 +7,7 @@
 
 	Usage:
 	var instances = new useful.Instances(document.querySelectorAll('#id.classname'), Constructor, {'foo':'bar'});
-	instances.wait(); or instances.start();
-	object = instances.get(element);
+	object = instances.getByObject(element);
 */
 
 (function (useful) {
@@ -17,25 +16,17 @@
 	"use strict";
 
 	// public functions
-	useful.Instances = function (objs, constructor, cfgs) {
+	useful.Instances = function (objs, constructor, cfg) {
 		// properties
 		this.objs = objs;
 		this.constructor = constructor;
-		this.cfgs = cfgs;
+		this.cfg = cfg;
 		this.constructs = [];
-		this.delay = 200;
-		// keeps trying until the DOM is ready
-		this.wait = function () {
-			var scope = this;
-			scope.timeout = (document.readyState.match(/interactive|loaded|complete/i)) ?
-				scope.start():
-				setTimeout(function () { scope.wait(); }, scope.delay);
-		};
 		// starts and stores an instance of the constructor for every element
 		this.start = function () {
 			for (var a = 0, b = this.objs.length; a < b; a += 1) {
-				// store a constructed instance with cloned cfgs object
-				this.constructs[a] = new this.constructor(this.objs[a], Object.create(this.cfgs));
+				// store a constructed instance with cloned cfg object
+				this.constructs[a] = new this.constructor(this.objs[a], Object.create(this.cfg));
 			}
 			// disable the start function so it can't be started twice
 			this.start = function () {};
@@ -54,8 +45,7 @@
 		this.getByIndex = function (index) {
 			return this.constructs[index];
 		};
-		// go
-		this.wait();
+		this.start();
 	};
 
 }(window.useful = window.useful || {}));
@@ -359,15 +349,13 @@
 		};
 		this.create = function (node, context) {
 			// create a placeholder for the placeholder
-			var positions = useful.positions.object(node);
 			var overlay = document.createElement('div');
 			overlay.className = 'placeholder';
 			overlay.innerHTML = node.getAttribute('placeholder');
 			overlay.style.position = 'absolute';
+			overlay.style.font = context.cfg.font;
 			overlay.style.color = context.cfg.color;
 			overlay.style.visibility = 'hidden';
-			overlay.style.left = (context.cfg.offsetX + positions.x) + 'px';
-			overlay.style.top = (context.cfg.offsetY + positions.y) + 'px';
 			overlay.style.zIndex = 10;
 			document.body.appendChild(overlay);
 			// set the event handlers
@@ -377,7 +365,16 @@
 			// initial state
 			context.show(node, overlay, context);
 		};
-		this.show = function (node, overlay) {
+		this.reposition = function (node, overlay, context) {
+			var positions = useful.positions.object(node);
+			// position the placeholder for the placeholder
+			overlay.style.left = (context.cfg.offsetX + positions.x) + 'px';
+			overlay.style.top = (context.cfg.offsetY + positions.y) + 'px';
+			overlay.style.width = (node.offsetWidth - 20) + 'px';
+		};
+		this.show = function (node, overlay, context) {
+			// reposition the overlay
+			context.reposition(node, overlay, context);
 			// if the field is empty and visible
 			if (node.value === '' && node.offsetWidth !== 0) {
 				// show the overlay

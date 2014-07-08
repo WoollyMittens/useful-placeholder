@@ -36,15 +36,13 @@
 		};
 		this.create = function (node, context) {
 			// create a placeholder for the placeholder
-			var positions = useful.positions.object(node);
 			var overlay = document.createElement('div');
 			overlay.className = 'placeholder';
 			overlay.innerHTML = node.getAttribute('placeholder');
 			overlay.style.position = 'absolute';
+			overlay.style.font = context.cfg.font;
 			overlay.style.color = context.cfg.color;
 			overlay.style.visibility = 'hidden';
-			overlay.style.left = (context.cfg.offsetX + positions.x) + 'px';
-			overlay.style.top = (context.cfg.offsetY + positions.y) + 'px';
 			overlay.style.zIndex = 10;
 			document.body.appendChild(overlay);
 			// set the event handlers
@@ -54,7 +52,16 @@
 			// initial state
 			context.show(node, overlay, context);
 		};
-		this.show = function (node, overlay) {
+		this.reposition = function (node, overlay, context) {
+			var positions = useful.positions.object(node);
+			// position the placeholder for the placeholder
+			overlay.style.left = (context.cfg.offsetX + positions.x) + 'px';
+			overlay.style.top = (context.cfg.offsetY + positions.y) + 'px';
+			overlay.style.width = (node.offsetWidth - 20) + 'px';
+		};
+		this.show = function (node, overlay, context) {
+			// reposition the overlay
+			context.reposition(node, overlay, context);
 			// if the field is empty and visible
 			if (node.value === '' && node.offsetWidth !== 0) {
 				// show the overlay

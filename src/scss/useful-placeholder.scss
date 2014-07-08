@@ -1,22 +1,10 @@
+@import "compass/css3";
+@import "compass/utilities";
+@import "mixins";
 /*
-	Reference styling for an input placeholder
+	Placeholder label
 */
-@media all {
-	@import "compass/css3";
-	@import "compass/utilities";
-	@import "_definitions";
-	@import "_typography" ;
-	/*
-		Placeholder label
-	*/
-	div.placeholder {
-		font-size : 1em;
-		color : #ccc;
-	}
+div.placeholder {
+	font-size : 1em;
+	color : #ccc;
 }
-@media (min-width: 1200px) {}
-@media (min-width: 980px) and (max-width: 1199px) {}
-@media (min-width: 768px) and (max-width: 979px) {}
-@media (max-width: 767px) {}
-@media (max-width: 480px) {}
-@media print {}
