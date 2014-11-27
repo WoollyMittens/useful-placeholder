@@ -1,62 +1,6 @@
 /*
 	Source:
-	van Creij, Maurice (2012). "useful.instances.js: A library of useful functions to ease working with instances of constructors.", version 20121126, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// public object
-var useful = useful || {};
-
-(function(){
-
-	// Invoke strict mode
-	"use strict";
-
-	// public functions
-	useful.Instances = function (objs, constructor, cfg) {
-		// properties
-		this.objs = objs;
-		this.constructor = constructor;
-		this.cfg = cfg;
-		this.constructs = [];
-		// starts and stores an instance of the constructor for every element
-		this.start = function () {
-			for (var a = 0, b = this.objs.length; a < b; a += 1) {
-				// store a constructed instance with cloned cfg object
-				this.constructs[a] = new this.constructor(this.objs[a], Object.create(this.cfg));
-			}
-			// disable the start function so it can't be started twice
-			this.start = function () {};
-			// empty the timeout
-			return null;
-		};
-		// returns the constructs
-		this.getAll = function () {
-			return this.constructs;
-		};
-		// returns the object that goes with the element
-		this.getByObject = function (element) {
-			return this.constructs[this.constructs.indexOf(element)];
-		};
-		// returns the object that goes with the index
-		this.getByIndex = function (index) {
-			return this.constructs[index];
-		};
-		this.start();
-	};
-
-	// return as a require.js module
-	if (typeof module !== 'undefined') {
-		exports = module.exports = useful.Instances;
-	}
-
-})();
-
-/*
-	Source:
-	van Creij, Maurice (2012). "useful.polyfills.js: A library of useful polyfills to ease working with HTML5 in legacy environments.", version 20121126, http://www.woollymittens.nl/.
+	van Creij, Maurice (2014). "useful.polyfills.js: A library of useful polyfills to ease working with HTML5 in legacy environments.", version 20141127, http://www.woollymittens.nl/.
 
 	License:
 	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
@@ -336,7 +280,7 @@ var useful = useful || {};
 
 /*
 	Source:
-	van Creij, Maurice (2012). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20121126, http://www.woollymittens.nl/.
+	van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
 
 	License:
 	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
@@ -443,100 +387,261 @@ var useful = useful || {};
 })();
 
 /*
+
 	Source:
-	van Creij, Maurice (2012). "useful.placeholder.js: Input placeholder labels", version 20130510, http://www.woollymittens.nl/.
+
+	van Creij, Maurice (2014). "useful.placeholder.js: Input placeholder labels", version 20141127, http://www.woollymittens.nl/.
+
+
 
 	License:
+
 	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+
 */
 
-// public object
+
+
+// create the constructor if needed
+
 var useful = useful || {};
 
-(function(){
+useful.Placeholder = useful.Placeholder || function () {};
 
-	// invoke strict mode
+
+
+// extend the constructor
+
+useful.Placeholder.prototype.Main = function (parent, cfg) {
+
+	// properties
+
 	"use strict";
 
-	// private functions
-	useful.Placeholder = function (obj, cfg) {
-		this.obj = obj;
-		this.cfg = cfg;
-		this.start = function () {
-			var context = this;
-			// if this browser doesn't support HTML5 placeholders
-			if (!context.cfg.support) {
-				// if this input element has a placeholder
-				var attribute = context.obj.getAttribute('placeholder');
-				if (attribute) {
-					// build the placeholder
-					context.create(context.obj, context);
-				}
-			} else {
-				// remove well intended hacks
-				if (context.obj.value === context.obj.getAttribute('placeholder')) {
-					context.obj.value = '';
-				}
-			}
-			// disable the start function so it can't be started twice
-			this.start = function () {};
-		};
-		this.create = function (node, context) {
-			// create a placeholder for the placeholder
-			var overlay = document.createElement('div');
-			overlay.className = 'placeholder';
-			overlay.innerHTML = node.getAttribute('placeholder');
-			overlay.style.position = 'absolute';
-			overlay.style.font = context.cfg.font;
-			overlay.style.color = context.cfg.color;
-			overlay.style.visibility = 'hidden';
-			overlay.style.zIndex = 10;
-			document.body.appendChild(overlay);
-			// set the event handlers
-			node.addEventListener('focus', function () { context.hide(node, overlay, context); }, false);
-			node.addEventListener('blur', function () { context.show(node, overlay, context); }, false);
-			overlay.addEventListener('mousedown', function () { context.focus(node, overlay, context); }, false);
-			// initial state
-			context.show(node, overlay, context);
-		};
-		this.reposition = function (node, overlay, context) {
-			var positions = useful.positions.object(node);
-			// position the placeholder for the placeholder
-			overlay.style.left = (context.cfg.offsetX + positions.x) + 'px';
-			overlay.style.top = (context.cfg.offsetY + positions.y) + 'px';
-			overlay.style.width = (node.offsetWidth - 20) + 'px';
-		};
-		this.show = function (node, overlay, context) {
-			// reposition the overlay
-			context.reposition(node, overlay, context);
-			// if the field is empty and visible
-			if (node.value === '' && node.offsetWidth !== 0) {
-				// show the overlay
-				overlay.style.visibility = 'visible';
-			} else {
-				// hide the overlay
-				overlay.style.visibility = 'hidden';
-			}
-		};
-		this.hide = function (node, overlay) {
-			// hide the overlay
-			overlay.style.visibility = 'hidden';
-		};
-		this.focus = function (node, overlay, context) {
-			// hide the placeholder
-			context.hide(node, overlay, context);
-			// focus the input element
-			setTimeout(function () {
-				node.focus();
-			}, 100);
-		};
-		// go
-		this.start();
+	this.parent = parent;
+
+	this.cfg = cfg;
+
+	this.obj = cfg.element;
+
+	// methods
+
+	this.start = function () {
+
+		// if this input element has a placeholder
+
+		var attribute = this.obj.getAttribute('placeholder');
+
+		if (attribute) {
+
+			// build the placeholder
+
+			this.create(this.obj);
+
+		}
+
+		// remove well intended hacks
+
+		if (this.obj.value === this.obj.getAttribute('placeholder')) {
+
+			this.obj.value = '';
+
+		}
+
 	};
 
-	// return as a require.js module
-	if (typeof module !== 'undefined') {
-		exports = module.exports = useful.Placeholder;
-	}
+	this.create = function (node) {
 
-})();
+		// create a placeholder for the placeholder
+
+		var overlay = document.createElement('div');
+
+		overlay.className = 'placeholder';
+
+		overlay.innerHTML = node.getAttribute('placeholder');
+
+		overlay.style.position = 'absolute';
+
+		overlay.style.visibility = 'hidden';
+
+		overlay.style.zIndex = 10;
+
+		document.body.appendChild(overlay);
+
+		// set the event handlers
+
+		var _this = this;
+
+		node.setAttribute('placeholder', '');
+
+		node.addEventListener('focus', function () { _this.hide(node, overlay); }, false);
+
+		node.addEventListener('blur', function () { _this.show(node, overlay); }, false);
+
+		overlay.addEventListener('mousedown', function () { _this.focus(node, overlay); }, false);
+
+		// initial state
+
+		this.show(node, overlay);
+
+	};
+
+	this.reposition = function (node, overlay) {
+
+		var positions = useful.positions.object(node);
+
+		// position the placeholder for the placeholder
+
+		overlay.style.left = (this.cfg.offsetX + positions.x) + 'px';
+
+		overlay.style.top = (this.cfg.offsetY + positions.y) + 'px';
+
+		overlay.style.width = (node.offsetWidth - 20) + 'px';
+
+	};
+
+	this.show = function (node, overlay) {
+
+		// reposition the overlay
+
+		this.reposition(node, overlay);
+
+		// if the field is empty and visible
+
+		if (node.value === '' && node.offsetWidth !== 0) {
+
+			// show the overlay
+
+			overlay.style.visibility = 'visible';
+
+		} else {
+
+			// hide the overlay
+
+			overlay.style.visibility = 'hidden';
+
+		}
+
+	};
+
+	this.hide = function (node, overlay) {
+
+		// hide the overlay
+
+		overlay.style.visibility = 'hidden';
+
+	};
+
+	this.focus = function (node, overlay) {
+
+		// hide the placeholder
+
+		this.hide(node, overlay);
+
+		// focus the input element
+
+		setTimeout(function () {
+
+			node.focus();
+
+		}, 100);
+
+	};
+
+	// go
+
+	this.start();
+
+};
+
+
+
+// return as a require.js module
+
+if (typeof module !== 'undefined') {
+
+	exports = module.exports = useful.Placeholder.Main;
+
+}
+
+
+/*
+
+	Source:
+
+	van Creij, Maurice (2014). "useful.placeholder.js: Input placeholder labels", version 20141127, http://www.woollymittens.nl/.
+
+
+
+	License:
+
+	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+
+*/
+
+
+
+// create the constructor if needed
+
+var useful = useful || {};
+
+useful.Placeholder = useful.Placeholder || function () {};
+
+
+
+// extend the constructor
+
+useful.Placeholder.prototype.init = function (cfg) {
+
+	// properties
+
+	"use strict";
+
+	this.instances = [];
+
+	// methods
+
+	this.each = function (elements, cfg) {
+
+		var _cfg, instance;
+
+		// for all elements
+
+		for (var a = 0, b = elements.length; a < b; a += 1) {
+
+			// clone the configuration
+
+			_cfg = Object.create(cfg);
+
+			// insert the current element
+
+			_cfg.element = elements[a];
+
+			// start a new instance of the object
+
+			this.instances.push(new this.Main(this, _cfg));
+
+		}
+
+	};
+
+	// go
+
+	this.each(cfg.elements, cfg);
+
+	this.init = function () {};
+
+	return this;
+
+};
+
+
+
+// return as a require.js module
+
+if (typeof module !== 'undefined') {
+
+	exports = module.exports = useful.Placeholder;
+
+}
+

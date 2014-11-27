@@ -30,10 +30,8 @@
 				<!-- Cut below this -->
 				<style>@import url("./inc/css/useful-placeholder.css");</style>
 				<form>
-					<label>
-						Label:
-						<input name="exampleplaceholder" class="placeholder" pattern="^.+$" type="text" value="" placeholder="Example placeholder"/>
-					</label>
+					<p><label>Native: <input name="placeholderA" type="text" value="" placeholder="Example placeholder"/></label></p>
+					<p><label>Fallback: <input name="placeholderB" class="placeholder" type="text" value="" placeholder="Example placeholder"/></label></p>
 				</form>
 				<script src="./inc/js/useful-placeholder.js"></script>
 				<script>
@@ -41,21 +39,14 @@
 					// wait for the page to load
 					window.addEventListener('load', function () {
 						// create new instances of the script
-						var placeholders = new useful.Instances(
-							document.querySelectorAll('input'),
-							useful.Placeholder,
-							{
-								// placeholder color
-								'color' : '#999',
-								'font' : 'normal normal normal 14px/100% Arial, Helvetica, sans-serif',
-								// browsers that are assumed to have native support for <input placeholder='Foo bar'/>
-								'support' : navigator.userAgent.match(/webkit|firefox|opera|msie 10/gi),
-								// position tweak
-								'offsetX' : 5,
-								'offsetY' : 1
-							}
-						);
-					}, false);
+						var placeholders = new useful.Placeholder().init({
+							// target elements
+							'elements' : document.querySelectorAll('.placeholder'),
+							// position tweak
+							'offsetX' : 5,
+							'offsetY' : 4
+						});
+					});
 				//-->
 				</script>
 				<!-- Cut above this -->

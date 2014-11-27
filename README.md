@@ -28,60 +28,19 @@ To enable the use of HTML5 tags in Internet Explorer 8 and lower, include *html5
 
 ## How to start the script
 
-This is the safest way of starting the script, but allows for only one target element at a time.
-
 ```javascript
-var placeholder = new useful.Placeholder( document.getElementById('id'), {
-	'color' : '#999',
-	'support' : navigator.userAgent.match(/webkit|firefox|opera|msie 10/gi),
+var placeholders = new useful.Placeholder().init({
+	'elements' : document.querySelectorAll('.placeholder'),
 	'offsetX' : 0,
 	'offsetY' : 0
 });
 ```
 
-**color : {string}** - A colour in hex format for the placeholder text.
-
-**support : {boolean}** - A test to determine which browsers have native support for the placeholder feature.
+**placeholders : {array}** - Collection of instances of the script.
 
 **offsetX : {integer}** - A fudge value in pixels to help precise horizontal positioning of the placeholder text.
 
 **offsetY : {integer}** - A fudge value in pixels to help precise vertical positioning of the placeholder text.
-
-### Using document.querySelectorAll
-
-This method allows CSS Rules to be used to apply the script to one or more nodes at the same time.
-
-```javascript
-var placeholder = new useful.Instances(
-	document.querySelectorAll('input'),
-	useful.Placeholder,
-	{
-		'color' : '#999',
-		'support' : navigator.userAgent.match(/webkit|firefox|opera|msie 10/gi),
-		'offsetX' : 0,
-		'offsetY' : 0
-	}
-);
-```
-
-The "Instances" function clones the settings for each element in the CSS rule.
-
-### Using jQuery
-
-This method is similar to the previous one, but uses jQuery for processing the CSS rule and cloning the settings.
-
-```javascript
-var placeholders = [];
-$('input').each(function (index, element) {
-	placeholders[index] = new useful.Placeholder( element, {
-		'color' : '#999',
-		'support' : navigator.userAgent.match(/webkit|firefox|opera|msie 10/gi),
-		'offsetX' : 0,
-		'offsetY' : 0
-	});
-	placeholders[index].start();
-});
-```
 
 ## How to build the script
 

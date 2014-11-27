@@ -4,7 +4,6 @@ module.exports = function(grunt) {
 	var name = 'placeholder';
 	var libs = [
 		'../useful-positions/src/js/useful-positions.js',
-		'../useful-instances/src/js/useful-instances.js',
 		'../useful-polyfills/src/js/useful-polyfills.js'
 	];
 	var mixins = [
