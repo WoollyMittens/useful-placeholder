@@ -11,7 +11,7 @@ var useful = useful || {};
 useful.Placeholder = useful.Placeholder || function () {};
 
 // extend the constructor
-useful.Placeholder.prototype.Main = function (parent, cfg) {
+useful.Placeholder.prototype.Main = function (cfg, parent) {
 	// properties
 	"use strict";
 	this.parent = parent;
