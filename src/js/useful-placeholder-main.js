@@ -11,24 +11,26 @@ var useful = useful || {};
 useful.Placeholder = useful.Placeholder || function () {};
 
 // extend the constructor
-useful.Placeholder.prototype.Main = function (cfg, parent) {
+useful.Placeholder.prototype.Main = function (config, context) {
 	// properties
 	"use strict";
-	this.parent = parent;
-	this.cfg = cfg;
-	this.obj = cfg.element;
+	this.config = config;
+	this.context = context;
+	this.element = config.element;
 	// methods
-	this.start = function () {
+	this.init = function () {
 		// if this input element has a placeholder
-		var attribute = this.obj.getAttribute('placeholder');
+		var attribute = this.element.getAttribute('placeholder');
 		if (attribute) {
 			// build the placeholder
-			this.create(this.obj);
+			this.create(this.element);
 		}
 		// remove well intended hacks
-		if (this.obj.value === this.obj.getAttribute('placeholder')) {
-			this.obj.value = '';
+		if (this.element.value === this.element.getAttribute('placeholder')) {
+			this.element.value = '';
 		}
+		// return the object
+		return this;
 	};
 	this.create = function (node) {
 		// create a placeholder for the placeholder
@@ -51,8 +53,8 @@ useful.Placeholder.prototype.Main = function (cfg, parent) {
 	this.reposition = function (node, overlay) {
 		var positions = useful.positions.object(node);
 		// position the placeholder for the placeholder
-		overlay.style.left = (this.cfg.offsetX + positions.x) + 'px';
-		overlay.style.top = (this.cfg.offsetY + positions.y) + 'px';
+		overlay.style.left = (this.config.offsetX + positions.x) + 'px';
+		overlay.style.top = (this.config.offsetY + positions.y) + 'px';
 		overlay.style.width = (node.offsetWidth - 20) + 'px';
 	};
 	this.show = function (node, overlay) {
@@ -79,8 +81,6 @@ useful.Placeholder.prototype.Main = function (cfg, parent) {
 			node.focus();
 		}, 100);
 	};
-	// go
-	this.start();
 };
 
 // return as a require.js module

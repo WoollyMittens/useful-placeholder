@@ -279,11 +279,11 @@ var useful = useful || {};
 })();
 
 /*
-	Source:
-	van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
+Source:
+van Creij, Maurice (2014). "useful.positions.js: A library of useful functions to ease working with screen positions.", version 20141127, http://www.woollymittens.nl/.
 
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
+License:
+This work is licensed under a Creative Commons Attribution 3.0 Unported License.
 */
 
 // public object
@@ -325,15 +325,15 @@ var useful = useful || {};
 				position.y = parent.scrollTop;
 			} else {
 				position.x = (window.pageXOffset) ?
-					window.pageXOffset :
-					(document.documentElement) ?
-						document.documentElement.scrollLeft :
-						document.body.scrollLeft;
+				window.pageXOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollLeft :
+				document.body.scrollLeft;
 				position.y = (window.pageYOffset) ?
-					window.pageYOffset :
-					(document.documentElement) ?
-						document.documentElement.scrollTop :
-						document.body.scrollTop;
+				window.pageYOffset :
+				(document.documentElement) ?
+				document.documentElement.scrollTop :
+				document.body.scrollTop;
 			}
 			// return the object
 			return position;
@@ -363,8 +363,16 @@ var useful = useful || {};
 			// define a position object
 			var position = {x : 0, y : 0};
 			// find the current position on the document
-			position.x = event.pageX || event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-			position.y = event.pageY || event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+			if (event.touches && event.touches[0]) {
+				position.x = event.touches[0].pageX;
+				position.y = event.touches[0].pageY;
+			} else if (event.pageX !== undefined) {
+				position.x = event.pageX;
+				position.y = event.pageY;
+			} else {
+				position.x = event.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft);
+				position.y = event.clientY + (document.documentElement.scrollTop || document.body.scrollTop);
+			}
 			// if a parent was given
 			if (parent) {
 				// retrieve the position of the parent
@@ -399,24 +407,26 @@ var useful = useful || {};
 useful.Placeholder = useful.Placeholder || function () {};
 
 // extend the constructor
-useful.Placeholder.prototype.Main = function (cfg, parent) {
+useful.Placeholder.prototype.Main = function (config, context) {
 	// properties
 	"use strict";
-	this.parent = parent;
-	this.cfg = cfg;
-	this.obj = cfg.element;
+	this.config = config;
+	this.context = context;
+	this.element = config.element;
 	// methods
-	this.start = function () {
+	this.init = function () {
 		// if this input element has a placeholder
-		var attribute = this.obj.getAttribute('placeholder');
+		var attribute = this.element.getAttribute('placeholder');
 		if (attribute) {
 			// build the placeholder
-			this.create(this.obj);
+			this.create(this.element);
 		}
 		// remove well intended hacks
-		if (this.obj.value === this.obj.getAttribute('placeholder')) {
-			this.obj.value = '';
+		if (this.element.value === this.element.getAttribute('placeholder')) {
+			this.element.value = '';
 		}
+		// return the object
+		return this;
 	};
 	this.create = function (node) {
 		// create a placeholder for the placeholder
@@ -439,8 +449,8 @@ useful.Placeholder.prototype.Main = function (cfg, parent) {
 	this.reposition = function (node, overlay) {
 		var positions = useful.positions.object(node);
 		// position the placeholder for the placeholder
-		overlay.style.left = (this.cfg.offsetX + positions.x) + 'px';
-		overlay.style.top = (this.cfg.offsetY + positions.y) + 'px';
+		overlay.style.left = (this.config.offsetX + positions.x) + 'px';
+		overlay.style.top = (this.config.offsetY + positions.y) + 'px';
 		overlay.style.width = (node.offsetWidth - 20) + 'px';
 	};
 	this.show = function (node, overlay) {
@@ -467,8 +477,6 @@ useful.Placeholder.prototype.Main = function (cfg, parent) {
 			node.focus();
 		}, 100);
 	};
-	// go
-	this.start();
 };
 
 // return as a require.js module
@@ -489,32 +497,32 @@ var useful = useful || {};
 useful.Placeholder = useful.Placeholder || function () {};
 
 // extend the constructor
-useful.Placeholder.prototype.init = function (cfg) {
+useful.Placeholder.prototype.init = function (config) {
 	// properties
 	"use strict";
 	// methods
-	this.only = function (cfg) {
+	this.only = function (config) {
 		// start an instance of the script
-		return new this.Main(cfg, this);
+		return new this.Main(config, this).init();
 	};
-	this.each = function (cfg) {
-		var _cfg, instances = [];
+	this.each = function (config) {
+		var _config, _context = this, instances = [];
 		// for all element
-		for (var a = 0, b = cfg.elements.length; a < b; a += 1) {
-			// clone the cfguration
-			_cfg = Object.create(cfg);
+		for (var a = 0, b = config.elements.length; a < b; a += 1) {
+			// clone the configuration
+			_config = Object.create(config);
 			// insert the current element
-			_cfg.element = cfg.elements[a];
+			_config.element = config.elements[a];
 			// delete the list of elements from the clone
-			delete _cfg.elements;
+			delete _config.elements;
 			// start a new instance of the object
-			instances[a] = new this.Main(_cfg, this);
+			instances[a] = new this.Main(_config, _context).init();
 		}
 		// return the instances
 		return instances;
 	};
 	// return a single or multiple instances of the script
-	return (cfg.elements) ? this.each(cfg) : this.only(cfg);
+	return (config.elements) ? this.each(config) : this.only(config);
 };
 
 // return as a require.js module
