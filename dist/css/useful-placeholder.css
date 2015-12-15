@@ -28,9 +28,7 @@ Applies the "clearfix" hack to a container with floating content
 /*
 	Placeholder label
 */
-/* line 7, ../../src/scss/useful-placeholder.scss */
 div.placeholder {
   white-space: nowrap;
   color: #999;
-  font: normal normal normal 11px/100% Arial, Helvetica, sans-serif;
-}
+  font: normal normal normal 11px/100% Arial, Helvetica, sans-serif; }

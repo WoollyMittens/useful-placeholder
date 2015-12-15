@@ -12,12 +12,16 @@ useful.Placeholder = useful.Placeholder || function () {};
 
 // extend the constructor
 useful.Placeholder.prototype.Main = function (config, context) {
-	// properties
+
+	// PROPERTIES
+	
 	"use strict";
 	this.config = config;
 	this.context = context;
 	this.element = config.element;
-	// methods
+
+	// METHODS
+	
 	this.init = function () {
 		// if this input element has a placeholder
 		var attribute = this.element.getAttribute('placeholder');
@@ -32,6 +36,7 @@ useful.Placeholder.prototype.Main = function (config, context) {
 		// return the object
 		return this;
 	};
+	
 	this.create = function (node) {
 		// create a placeholder for the placeholder
 		var overlay = document.createElement('div');
@@ -50,6 +55,7 @@ useful.Placeholder.prototype.Main = function (config, context) {
 		// initial state
 		this.show(node, overlay);
 	};
+	
 	this.reposition = function (node, overlay) {
 		var positions = useful.positions.object(node);
 		// position the placeholder for the placeholder
@@ -57,6 +63,7 @@ useful.Placeholder.prototype.Main = function (config, context) {
 		overlay.style.top = (this.config.offsetY + positions.y) + 'px';
 		overlay.style.width = (node.offsetWidth - 20) + 'px';
 	};
+	
 	this.show = function (node, overlay) {
 		// reposition the overlay
 		this.reposition(node, overlay);
@@ -69,10 +76,12 @@ useful.Placeholder.prototype.Main = function (config, context) {
 			overlay.style.visibility = 'hidden';
 		}
 	};
+	
 	this.hide = function (node, overlay) {
 		// hide the overlay
 		overlay.style.visibility = 'hidden';
 	};
+	
 	this.focus = function (node, overlay) {
 		// hide the placeholder
 		this.hide(node, overlay);
