@@ -2,7 +2,7 @@
 
 An alternative for the HTML5 input element placeholder attribute.
 
-Try the <a href="http://www.woollymittens.nl/useful/default.php?url=useful-placeholder">demo</a>.
+Try the <a href="http://www.woollymittens.nl/default.php?url=useful-placeholder">demo</a>.
 
 ## How to include the script
 
