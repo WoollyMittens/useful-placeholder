@@ -1,4 +1,4 @@
-# useful.placeholder.js: Placeholder input label
+# placeholder.js: Placeholder input label
 
 An alternative for the HTML5 input element placeholder attribute.
 
@@ -9,27 +9,19 @@ Try the <a href="http://www.woollymittens.nl/default.php?url=useful-placeholder"
 The stylesheet is best included in the header of the document.
 
 ```html
-<link rel="stylesheet" href="./css/useful-placeholder.css"/>
+<link rel="stylesheet" href="./css/placeholder.css"/>
 ```
 
 This include can be added to the header or placed inline before the script is invoked.
 
 ```html
-<script src="./js/useful-placeholder.js"></script>
-```
-
-To enable the use of HTML5 tags in Internet Explorer 8 and lower, include *html5.js*.
-
-```html
-<!--[if lte IE 9]>
-	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
+<script src="./js/placeholder.js"></script>
 ```
 
 ## How to start the script
 
 ```javascript
-var placeholders = new useful.Placeholder().init({
+var placeholders = new Placeholder().init({
 	'elements' : document.querySelectorAll('.placeholder'),
 	'offsetX' : 0,
 	'offsetY' : 0

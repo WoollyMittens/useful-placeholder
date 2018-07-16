@@ -1,27 +1,14 @@
-/*
-	Source:
-	van Creij, Maurice (2014). "useful.placeholder.js: Input placeholder labels", version 20141127, http://www.woollymittens.nl/.
-
-	License:
-	This work is licensed under a Creative Commons Attribution 3.0 Unported License.
-*/
-
-// create the constructor if needed
-var useful = useful || {};
-useful.Placeholder = useful.Placeholder || function () {};
-
-// extend the constructor
-useful.Placeholder.prototype.Main = function (config, context) {
+// extend the class
+Placeholder.prototype.Main = function (config, context) {
 
 	// PROPERTIES
-	
-	"use strict";
+
 	this.config = config;
 	this.context = context;
 	this.element = config.element;
 
 	// METHODS
-	
+
 	this.init = function () {
 		// if this input element has a placeholder
 		var attribute = this.element.getAttribute('placeholder');
@@ -33,10 +20,8 @@ useful.Placeholder.prototype.Main = function (config, context) {
 		if (this.element.value === this.element.getAttribute('placeholder')) {
 			this.element.value = '';
 		}
-		// return the object
-		return this;
 	};
-	
+
 	this.create = function (node) {
 		// create a placeholder for the placeholder
 		var overlay = document.createElement('div');
@@ -55,15 +40,15 @@ useful.Placeholder.prototype.Main = function (config, context) {
 		// initial state
 		this.show(node, overlay);
 	};
-	
+
 	this.reposition = function (node, overlay) {
-		var positions = useful.positions.object(node);
+		var positions = positions.object(node);
 		// position the placeholder for the placeholder
 		overlay.style.left = (this.config.offsetX + positions.x) + 'px';
 		overlay.style.top = (this.config.offsetY + positions.y) + 'px';
 		overlay.style.width = (node.offsetWidth - 20) + 'px';
 	};
-	
+
 	this.show = function (node, overlay) {
 		// reposition the overlay
 		this.reposition(node, overlay);
@@ -76,12 +61,12 @@ useful.Placeholder.prototype.Main = function (config, context) {
 			overlay.style.visibility = 'hidden';
 		}
 	};
-	
+
 	this.hide = function (node, overlay) {
 		// hide the overlay
 		overlay.style.visibility = 'hidden';
 	};
-	
+
 	this.focus = function (node, overlay) {
 		// hide the placeholder
 		this.hide(node, overlay);
@@ -90,9 +75,6 @@ useful.Placeholder.prototype.Main = function (config, context) {
 			node.focus();
 		}, 100);
 	};
-};
 
-// return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = useful.Placeholder.Main;
-}
+	this.init();
+};
