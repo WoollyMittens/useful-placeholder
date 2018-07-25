@@ -111,7 +111,7 @@ if (typeof module !== 'undefined') {
 */
 
 // establish the class
-var Placeholder.prototype.init = function (config) {
+var Placeholder = function (config) {
 
 		this.only = function (config) {
 			// start an instance of the script
@@ -186,10 +186,10 @@ Placeholder.prototype.Main = function (config, context) {
 	};
 
 	this.reposition = function (node, overlay) {
-		var positions = positions.object(node);
+		var position = positions.object(node);
 		// position the placeholder for the placeholder
-		overlay.style.left = (this.config.offsetX + positions.x) + 'px';
-		overlay.style.top = (this.config.offsetY + positions.y) + 'px';
+		overlay.style.left = (this.config.offsetX + position.x) + 'px';
+		overlay.style.top = (this.config.offsetY + position.y) + 'px';
 		overlay.style.width = (node.offsetWidth - 20) + 'px';
 	};
 

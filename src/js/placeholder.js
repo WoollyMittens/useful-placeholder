@@ -7,7 +7,7 @@
 */
 
 // establish the class
-var Placeholder.prototype.init = function (config) {
+var Placeholder = function (config) {
 
 		this.only = function (config) {
 			// start an instance of the script
