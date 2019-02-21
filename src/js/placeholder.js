@@ -1,3 +1,8 @@
+
+
+// return as a require.js module
+if (typeof define != 'undefined') define(['photozoom'], function () { return Photozoom });
+if (typeof module != 'undefined') module.exports = Photozoom;
 /*
 	Source:
 	van Creij, Maurice (2018). "placeholder.js: Input placeholder labels", http://www.woollymittens.nl/.
@@ -34,6 +39,5 @@ var Placeholder = function (config) {
 };
 
 // return as a require.js module
-if (typeof module !== 'undefined') {
-	exports = module.exports = Placeholder;
-}
+if (typeof define != 'undefined') define(['placeholder'], function () { return Placeholder });
+if (typeof module != 'undefined') module.exports = Placeholder;
