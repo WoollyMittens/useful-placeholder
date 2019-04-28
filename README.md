@@ -9,19 +9,38 @@ Try the <a href="http://www.woollymittens.nl/default.php?url=useful-placeholder"
 The stylesheet is best included in the header of the document.
 
 ```html
-<link rel="stylesheet" href="./css/placeholder.css"/>
+<link rel="stylesheet" href="css/placeholder.css"/>
 ```
 
 This include can be added to the header or placed inline before the script is invoked.
 
 ```html
-<script src="./js/placeholder.js"></script>
+<script src="lib/positions.js"></script>
+<script src="js/placeholder.js"></script>
+```
+
+Or use [Require.js](https://requirejs.org/).
+
+```js
+requirejs([
+	'lib/positions.js',
+	'js/placeholder.js'
+], function(positions, Placeholder) {
+	...
+});
+```
+
+Or import into an MVC framework.
+
+```js
+var positions = require('lib/positions.js');
+var Placeholder = require('js/placeholder.js');
 ```
 
 ## How to start the script
 
 ```javascript
-var placeholders = new Placeholder().init({
+var placeholders = new Placeholder({
 	'elements' : document.querySelectorAll('.placeholder'),
 	'offsetX' : 0,
 	'offsetY' : 0
